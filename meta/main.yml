@@ -1,9 +1,7 @@
 galaxy_info:
   author: keztriel
   role_name: mysql
-  description: your role description
-  company: your company (optional)
-
+  description: MySql installer
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
   # issue_tracker_url: http://example.com/issue/tracker
@@ -50,8 +48,8 @@ galaxy_info:
 
 dependencies:
 - name: galaxy
-skip_list:
-  - role-name
+# skip_list:
+#   - role-name
 
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
