@@ -1,0 +1,20 @@
+---
+# vars file for ansible-role-mysql
+
+mysql_package: mysql-server
+mysql_service: mysql
+mysql_root_user: root
+mysql_root_password: "{{ vault_mysql_root_password }}"
+
+mysql_databases:
+  - name: db1
+
+mysql_users:
+  - name: user1
+    password: user1password
+
+mysql_config_file: /etc/mysql/mysql.conf.d/mysqld.cnf
+
+mysql_max_connections: 1000
+mysql_wait_timeout: 60
+mysql_interactive_timeout: 60

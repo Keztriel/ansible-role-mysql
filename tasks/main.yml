@@ -1,0 +1,33 @@
+---
+# tasks file for ansible-role-mysql
+- name: Install MySQL
+  package:
+    name: "{{ mysql_package }}"
+    state: present
+  become: true
+
+- name: Start and enable MySQL service
+  service:
+    name: "{{ mysql_service }}"
+    enabled: yes
+    state: started
+  become: true
+
+- name: Create databases
+  mysql_db:
+    name: "{{ item.name }}"
+    state: present
+  with_items: "{{ mysql_databases }}"
+  become: true
+
+- name: Change database settings via a file
+  copy:
+    dest: "{{ mysql_config_file }}"
+    content: |
+      [mysqld]
+      {{ item }}
+  with_items:
+    - max_connections={{ mysql_max_connections }}
+    - wait_timeout={{ mysql_wait_timeout }}
+    - interactive_timeout={{ mysql_interactive_timeout }}
+

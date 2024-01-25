@@ -1,0 +1,44 @@
+---
+- hosts: server
+  remote_user: root
+  roles:
+    - ansible-role-mysql
+  vars:
+    mysql_root_password: password
+    mysql_databases:
+      - name: testdb
+        state: present
+    mysql_users:
+      - name: testuser
+        password: password
+        priv: testdb.*:ALL
+        state: present
+  tasks:
+    - name: Test that the test user has been created
+      mysql_user:
+        name: testuser
+        password: password
+        state: present
+      register: mysql_user_result
+
+    - name: Test that the test database has been created
+      mysql_db:
+        name: testdb
+        state: present
+      register: mysql_db_result
+
+    - name: Check that the test user has the correct privileges on the test database
+      mysql_user:
+        name: testuser
+        password: password
+        priv: testdb.*:ALL
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      when: mysql_user_result.changed
+
+    - name: Check that the test database has been created
+      assert:
+        that: mysql_db_result.changed
+  become: yes
+
